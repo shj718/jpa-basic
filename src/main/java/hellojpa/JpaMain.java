@@ -19,12 +19,12 @@ public class JpaMain {
 
         // DB 작업 (데이터 저장 등)
         try {
-            List<Member> members = entityManager.createQuery("select m from Member as m where m.id < 3L", Member.class)
-                    .getResultList();
-            for(Member member : members) {
-                System.out.println("member.name = " + member.getName());
-            }
+            Member member = new Member();
+            member.setId(1L);
+            member.setUsername("A");
+            member.setRoleType(RoleType.USER);
 
+            entityManager.persist(member);
             // 커밋
             transaction.commit();
         } catch (Exception e) {
