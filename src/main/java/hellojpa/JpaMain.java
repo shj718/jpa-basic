@@ -19,12 +19,22 @@ public class JpaMain {
 
         // DB 작업 (데이터 저장 등)
         try {
-            Member member = new Member();
-            member.setUsername("B");
-            em.persist(member);
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
 
-            // 커밋
-            transaction.commit();
+            Member member = new Member();
+            member.setUsername("userA");
+            // *** 연관관계의 주인에 값 설정
+            member.changeTeam(team);
+            em.persist(member);
+            // *** 주인이 아닌쪽에도 값 설정
+            // team.getMembers().add(member);
+
+            em.flush(); // 영속성 컨텍스트를 DB에 동기화
+            em.clear(); // 영속성 컨텍스트 초기화
+
+            transaction.commit(); // 커밋
         } catch (Exception e) {
             transaction.rollback();
         } finally {
