@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -23,16 +24,35 @@ public class JpaMain {
             team.setName("teamA");
             em.persist(team);
 
+            Locker locker = new Locker();
+            locker.setName("locker1");
+            em.persist(locker);
+
             Member member = new Member();
             member.setUsername("userA");
             // *** 연관관계의 주인에 값 설정
             member.changeTeam(team);
+            member.setLocker(locker);
             em.persist(member);
             // *** 주인이 아닌쪽에도 값 설정
             // team.getMembers().add(member);
 
+            Product product = new Product();
+            product.setName("productA");
+            em.persist(product);
+
+            MemberProduct memberProduct = new MemberProduct();
+            memberProduct.setMember(member);
+            memberProduct.setProduct(product);
+            memberProduct.setOrderAmount(3);
+            memberProduct.setOrderDate(LocalDateTime.now());
+            em.persist(memberProduct);
+
             em.flush(); // 영속성 컨텍스트를 DB에 동기화
             em.clear(); // 영속성 컨텍스트 초기화
+
+            Member findMember = em.find(Member.class, member.getId());
+            System.out.println("locker.name = " + findMember.getLocker().getName());
 
             transaction.commit(); // 커밋
         } catch (Exception e) {
