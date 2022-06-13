@@ -20,7 +20,7 @@ public class JpaMain {
 
         // DB 작업 (데이터 저장 등)
         try {
-            Team team = new Team();
+            /* Team team = new Team();
             team.setName("teamA");
             em.persist(team);
 
@@ -52,7 +52,13 @@ public class JpaMain {
             em.clear(); // 영속성 컨텍스트 초기화
 
             Member findMember = em.find(Member.class, member.getId());
-            System.out.println("locker.name = " + findMember.getLocker().getName());
+            System.out.println("locker.name = " + findMember.getLocker().getName()); */
+
+            Album album = new Album();
+            album.setArtist("백예린");
+            album.setName("백예린 앨범");
+            album.setPrice(30000);
+            em.persist(album);
 
             transaction.commit(); // 커밋
         } catch (Exception e) {

@@ -3,28 +3,22 @@ package hellojpa;
 import javax.persistence.*;
 
 @Entity
-public class Locker {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn
+public class Item {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "LOCKER_ID")
-    private Long lockerPK;
+    private Long id;
 
-    @Column(name = "NAME")
     private String name;
-
-    @OneToOne(mappedBy = "locker")
-    private Member member;
-
-    public Locker() {
-
-    }
+    private int price;
 
     public Long getId() {
-        return lockerPK;
+        return id;
     }
 
     public void setId(Long id) {
-        this.lockerPK = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -33,5 +27,13 @@ public class Locker {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }
