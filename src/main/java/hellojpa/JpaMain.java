@@ -52,13 +52,35 @@ public class JpaMain {
             em.clear(); // 영속성 컨텍스트 초기화
 
             Member findMember = em.find(Member.class, member.getId());
-            System.out.println("locker.name = " + findMember.getLocker().getName()); */
+            System.out.println("locker.name = " + findMember.getLocker().getName());
 
             Album album = new Album();
             album.setArtist("백예린");
             album.setName("백예린 앨범");
             album.setPrice(30000);
-            em.persist(album);
+            em.persist(album); */
+
+            // @MappedSuperclass 테스트
+            Team team = new Team();
+            team.setName("teamA");
+            team.setCreatedBy("hongik");
+            team.setCreatedDateTime(LocalDateTime.now());
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("shj");
+            member.setCreatedBy("admin");
+            member.setCreatedDateTime(LocalDateTime.now());
+            member.changeTeam(team);
+            em.persist(member);
+
+            em.flush(); // 영속성 컨텍스트를 DB에 동기화
+            em.clear(); // 영속성 컨텍스트 초기화
+
+            // 지연 로딩 테스트
+            Member findMember = em.find(Member.class, member.getId());
+            System.out.println("member.username = " + findMember.getUsername());
+            System.out.println("member.team.name = " + findMember.getTeam().getName()); // 실제 Team DB 조회 (프록시 객체 초기화)
 
             transaction.commit(); // 커밋
         } catch (Exception e) {
