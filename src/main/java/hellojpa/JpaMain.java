@@ -58,7 +58,7 @@ public class JpaMain {
             album.setArtist("백예린");
             album.setName("백예린 앨범");
             album.setPrice(30000);
-            em.persist(album); */
+            em.persist(album);
 
             // @MappedSuperclass 테스트
             Team team = new Team();
@@ -80,7 +80,28 @@ public class JpaMain {
             // 지연 로딩 테스트
             Member findMember = em.find(Member.class, member.getId());
             System.out.println("member.username = " + findMember.getUsername());
-            System.out.println("member.team.name = " + findMember.getTeam().getName()); // 실제 Team DB 조회 (프록시 객체 초기화)
+            System.out.println("member.team.name = " + findMember.getTeam().getName()); // 실제 Team DB 조회 (프록시 객체 초기화) */
+
+            // CASCADE 테스트
+            Child child1 = new Child();
+            child1.setName("어린이1");
+            Child child2 = new Child();
+            child2.setName("어린이2");
+
+            Parent parent = new Parent();
+            parent.setName("부모");
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+
+            // 고아 객체 테스트
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, parent.getId());
+            // em.remove(findParent);
+            findParent.getChildList().remove(0);
 
             transaction.commit(); // 커밋
         } catch (Exception e) {
