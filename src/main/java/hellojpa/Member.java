@@ -20,12 +20,18 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LOCKER_ID")
     private Locker locker;
 
     @OneToMany(mappedBy = "member")
     private List<MemberProduct> memberProducts = new ArrayList<>();
+
+    @Embedded
+    private Period workPeriod;
+
+    @Embedded
+    private Address homeAddress;
 
     // JPA 는 기본 생성자가 필수.
     public Member() {
@@ -72,5 +78,21 @@ public class Member extends BaseEntity {
 
     public void setMemberProducts(List<MemberProduct> memberProducts) {
         this.memberProducts = memberProducts;
+    }
+
+    public Period getWorkPeriod() {
+        return workPeriod;
+    }
+
+    public void setWorkPeriod(Period workPeriod) {
+        this.workPeriod = workPeriod;
+    }
+
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
     }
 }

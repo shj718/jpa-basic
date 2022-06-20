@@ -100,8 +100,15 @@ public class JpaMain {
             em.clear();
 
             Parent findParent = em.find(Parent.class, parent.getId());
-            // em.remove(findParent);
-            findParent.getChildList().remove(0);
+            em.remove(findParent);
+            // findParent.getChildList().remove(0);
+
+            // 임베디드 타입 테스트
+            Member member = new Member();
+            member.setUsername("shj");
+            member.setHomeAddress(new Address("서울", "와우산로", "94"));
+            member.setWorkPeriod(new Period(LocalDateTime.now(), LocalDateTime.now().plusYears(1L)));
+            em.persist(member);
 
             transaction.commit(); // 커밋
         } catch (Exception e) {
